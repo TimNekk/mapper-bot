@@ -2,7 +2,7 @@ version: "3.1"
 
 services:
   tgbot:
-    container_name: bot
+    container_name: mapper-bot
     build:
       context: .
     command: python app.py
