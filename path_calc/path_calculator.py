@@ -7,6 +7,10 @@ from fuzzywuzzy import fuzz
 import pickle
 
 
+def get_now_time_utc():
+    return datetime.utcnow() + timedelta(hours=3)
+
+
 def get_potapovo_time():
     url = 'https://potapovo.com/resident/marshrutki'
     r = requests.get(url)
@@ -16,7 +20,7 @@ def get_potapovo_time():
     hour = int(text_time[:2])
     minute = int(text_time[3:])
 
-    current_time = datetime.today()
+    current_time = get_now_time_utc()
     time = current_time.replace(hour=hour, minute=minute, second=0, microsecond=0)
 
     return time
@@ -51,7 +55,7 @@ def calc_636_time():
     bus_travel_time = timedelta(minutes=15)
     # TODO: Нужно измерить сколько нужно идти до 636
     legs_travel_time = timedelta(minutes=11)
-    current_time = datetime.today()
+    current_time = get_now_time_utc()
     bus_start_time = False
 
     for time in process_636_time()[::-1]:
@@ -74,7 +78,7 @@ def process_636_time():
         if re.findall(r'мин', text):
             minute = int(re.findall(r'\d+', text)[0])
             delta = timedelta(minutes=minute)
-            current_time = datetime.today()
+            current_time = get_now_time_utc()
 
             time = (current_time + delta).replace(second=0, microsecond=0)
             output.append(time)
@@ -82,8 +86,8 @@ def process_636_time():
 
 
 def calc_skate_time():
-    go_out_time = datetime.today()
-    arrival_time = datetime.today() + timedelta(minutes=15)
+    go_out_time = get_now_time_utc()
+    arrival_time = get_now_time_utc() + timedelta(minutes=15)
     return go_out_time, arrival_time
 
 
@@ -115,7 +119,7 @@ def find_best_option(user_text):
 
 
 def calc_delta(time):
-    current_time = datetime.today()
+    current_time = get_now_time_utc()
     delta = time - current_time
     if delta.days != -1:
         minuts = round(delta.seconds / 60)
@@ -204,5 +208,5 @@ def get_text_timetable():
     for n in range(len(ways)):
         text += f'{emoji_numbers[n]} <b>{ways[n]["name"]}\n</b>Прибытие в <b>{calc_time_from_datetime(ways[n]["arrival_time"])}</b>\n' \
                 f'Выходи через <b>{ways[n]["go_out_time"]}</b>\n\n'
-    text += f'<i>Обновлено: {datetime.now().strftime("%H:%M")}</i>'
+    text += f'<i>Обновлено: {get_now_time_utc().strftime("%H:%M")}</i>'
     return text
