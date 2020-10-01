@@ -133,29 +133,28 @@ def calc_time_from_datetime(time):
 # ------------------------------------------------------------
 
 
-bus_potapovo = {
-    'name': 'Пот. Автобус',
-    'go_out_time': calc_delta(calc_potapovo_time()[0]),
-    'arrival_time': calc_potapovo_time()[1]
-}
-
-if calc_636_time():
-    bus_636 = {
-        'name': '636 Автобус',
-        'go_out_time': calc_delta(calc_636_time()[0]),
-        'arrival_time': calc_636_time()[1]
-    }
-else:
-    bus_636 = False
-
-skate = {
-    'name': 'Скейт',
-    'go_out_time': calc_delta(calc_skate_time()[0]),
-    'arrival_time': calc_skate_time()[1]
-}
-
-
 def put_ways_in_order():
+    bus_potapovo = {
+        'name': 'Пот. Автобус',
+        'go_out_time': calc_delta(calc_potapovo_time()[0]),
+        'arrival_time': calc_potapovo_time()[1]
+    }
+
+    if calc_636_time():
+        bus_636 = {
+            'name': '636 Автобус',
+            'go_out_time': calc_delta(calc_636_time()[0]),
+            'arrival_time': calc_636_time()[1]
+        }
+    else:
+        bus_636 = False
+
+    skate = {
+        'name': 'Скейт',
+        'go_out_time': calc_delta(calc_skate_time()[0]),
+        'arrival_time': calc_skate_time()[1]
+    }
+
     ways_correct = []
     if bus_636:
         if bus_potapovo['arrival_time'] <= bus_636['arrival_time'] and bus_potapovo['arrival_time'] <= skate['arrival_time']:
